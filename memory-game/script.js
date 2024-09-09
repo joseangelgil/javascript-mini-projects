@@ -1,23 +1,38 @@
 const containerEl = document.getElementById("container");
-const cards = Array.from(document.getElementsByClassName("card"));
+const cardsEl = Array.from(document.getElementsByClassName("card"));
+const startScreenEl = document.getElementById('start-screen');
+const restartScreenEl = document.getElementById('restart-screen');
+const startGameBtn = document.getElementById('start-game');
+const restartGameBtn = document.getElementById('restart-game');
 
-const newCards = [];
+let newCards = [];
 let selection = [];
 
-for(let i = 0; i < 12; i++) {
-  let randomIndex = Math.floor(Math.random() * cards.length);
-  let removedEl = cards.splice(randomIndex, 1)[0];
-  newCards.push(removedEl)
-}
+function startGame() {
 
-containerEl.innerHTML = '';
+  startScreenEl.style.display = 'none';
+  restartScreenEl.style.display = 'none';
+  hideCards(newCards)
+  newCards.forEach(card => {
+    card.removeAttribute('style')
+    card.removeEventListener('click', handleCardClick)
+  })
 
-newCards.forEach(card => {
-  containerEl.appendChild(card);
-})
+  let cards = cardsEl.length ? cardsEl : newCards;
+  newCards = [];
 
-
-window.addEventListener("load", () => {
+  for(let i = 0; i < 12; i++) {
+    let randomIndex = Math.floor(Math.random() * cards.length);
+    let removedEl = cards.splice(randomIndex, 1)[0];
+    newCards.push(removedEl)
+  }
+  
+  newCards.forEach(card => {
+    containerEl.appendChild(card);  
+    card.addEventListener('click', handleCardClick);
+  })
+  
+   
   setTimeout(() => {
     showCards(newCards)}, 1000);
   setTimeout(() => {
@@ -25,51 +40,50 @@ window.addEventListener("load", () => {
       card.disabled = false;
     })
     hideCards(newCards)}, 5000);
-})
- 
-newCards.forEach(card => {
+}
 
-  card.addEventListener("click", (event) => {
-    switch (event.target.id) {
-      case "1":
-      case "2":
-        card.classList.toggle("blue");
-        card.setAttribute("disabled", true)
-        check("blue");
-        break;
-      case "3":
-      case "4":
-        card.classList.toggle("red");        
-        card.setAttribute("disabled", true)
-        check("red");
-        break;
-      case "5":
-      case "6":
-        card.classList.toggle("yellow");
-        card.setAttribute("disabled", true)
-        check("yellow");
-        break;
-      case "7":
-      case "8":
-        card.classList.toggle("green");
-        card.setAttribute("disabled", true)
-        check("green");
-        break;
-      case "9":
-      case "10":
-        card.classList.toggle("pink");
-        card.setAttribute("disabled", true)
-        check("pink");
-        break;
-      case "11":
-      case "12":
-        card.classList.toggle("orangered");
-        card.setAttribute("disabled", true)
-        check("orangered");
-        break;
-    }  
-  })             
-})
+
+function handleCardClick(event) {
+  
+  switch (event.target.id) {
+    case "1":
+    case "2":
+      event.target.classList.toggle("blue");
+      event.target.setAttribute("disabled", true)
+      check("blue");
+      break;
+    case "3":
+    case "4":
+      event.target.classList.toggle("red");        
+      event.target.setAttribute("disabled", true)
+      check("red");
+      break;
+    case "5":
+    case "6":
+      event.target.classList.toggle("yellow");
+      event.target.setAttribute("disabled", true)
+      check("yellow");
+      break;
+    case "7":
+    case "8":
+      event.target.classList.toggle("green");
+      event.target.setAttribute("disabled", true)
+      check("green");
+      break;
+    case "9":
+    case "10":
+      event.target.classList.toggle("pink");
+      event.target.setAttribute("disabled", true)
+      check("pink");
+      break;
+    case "11":
+    case "12":
+      event.target.classList.toggle("orangered");
+      event.target.setAttribute("disabled", true)
+      check("orangered");
+      break;
+  }            
+}
 
 
 function check(code) {
@@ -144,6 +158,9 @@ function hideCards(arr){
 
 function checkWin() {
   if(newCards.every(card => card.style.opacity === "0")) {
-    containerEl.innerHTML = '<h1>YOU WIN!!!</h1>';
+    restartScreenEl.style.display = 'flex';
   } 
 }
+
+startGameBtn.addEventListener('click', startGame)
+restartGameBtn.addEventListener('click', startGame)
