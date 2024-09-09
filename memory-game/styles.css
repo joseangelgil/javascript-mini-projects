@@ -1,0 +1,75 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: cursive;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: lightgreen;
+}
+
+
+h1 {
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  color: saddlebrown;
+  text-shadow: -2px 2px 2px rgba(0,0,0,0.8);
+}
+
+.container {
+  margin-top: 30px;
+  background-color: #eee;
+  width: 600px;
+  height: 600px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-radius: 12px;
+  justify-items: center;
+  align-items: center;
+  border: 6px solid saddlebrown;
+  box-shadow: -4px 4px 2px rgba(0,0,0,0.8);
+}
+
+button {
+  border: none;
+  outline: none;
+}
+
+.card {
+  width: 100px;
+  height: 150px;
+  background-color: saddlebrown;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: -2px 2px 2px rgba(0,0,0,0.8);
+}
+
+.card.blue {
+  background-color: blue;
+}
+
+.card.red {
+  background-color: red;
+}
+
+.card.yellow {
+  background-color: yellow;
+}
+
+.card.green {
+  background-color: green;
+}
+
+.card.pink {
+  background-color: pink;
+}
+
+.card.orangered {
+  background-color: orangered;
+}
