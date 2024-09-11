@@ -8,12 +8,20 @@
 </head>
 <body>
   <h1>Memory Game</h1>
+  <div class="stats">
+    <div id="lives">
+      <p class="live">&#9829;</p>
+      <p class="live">&#9829;</p>
+      <p class="live">&#9829;</p>
+    </div>
+    <h1 id="time">20</h1>
+  </div>
   <div class="container" id="container">
     <div id="start-screen">
       <button id="start-game">START GAME</button>
     </div>
     <div id="restart-screen">
-      <h1>YOU WIN!</h1>
+      <h1 id="result-text">YOU WIN!</h1>
       <button id="restart-game">PLAY AGAIN!</button>
     </div>
     <button class="card" id="1" disabled></button>

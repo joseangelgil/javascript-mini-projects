@@ -4,9 +4,20 @@ const startScreenEl = document.getElementById('start-screen');
 const restartScreenEl = document.getElementById('restart-screen');
 const startGameBtn = document.getElementById('start-game');
 const restartGameBtn = document.getElementById('restart-game');
+const livesEls = document.getElementsByClassName('live');
+const life1 = document.querySelector('#lives p:nth-child(1)')
+const life2 = document.querySelector('#lives p:nth-child(2)')
+const life3 = document.querySelector('#lives p:nth-child(3)')
+const timeEl = document.getElementById('time');
+const resultText = document.getElementById('result-text');
 
 let newCards = [];
 let selection = [];
+let time = 20;
+let gameCounter;
+let livesLost = 0;
+let livesArray = [...livesEls];
+
 
 function startGame() {
 
@@ -17,6 +28,13 @@ function startGame() {
     card.removeAttribute('style')
     card.removeEventListener('click', handleCardClick)
   })
+  time = 20;
+  timeEl.innerText = time;
+  livesLost = 0;
+  livesArray = [...livesEls];
+  life1.style.opacity = 1;
+  life2.style.opacity = 1;
+  life3.style.opacity = 1;
 
   let cards = cardsEl.length ? cardsEl : newCards;
   newCards = [];
@@ -30,8 +48,7 @@ function startGame() {
   newCards.forEach(card => {
     containerEl.appendChild(card);  
     card.addEventListener('click', handleCardClick);
-  })
-  
+  })  
    
   setTimeout(() => {
     showCards(newCards)}, 1000);
@@ -39,7 +56,14 @@ function startGame() {
     newCards.forEach(card => {
       card.disabled = false;
     })
-    hideCards(newCards)}, 5000);
+    hideCards(newCards)
+    gameCounter = setInterval(() => {
+      time--
+      if(time >= 0) timeEl.innerText = time;
+      else finishGame()
+    }, 1000)
+  }, 5000);
+  
 }
 
 
@@ -99,7 +123,7 @@ function check(code) {
             card.style.opacity = "0";
             card.style.cursor = 'auto';
             card.setAttribute("disabled", true);
-            checkWin();
+            if(newCards.every(card => card.style.opacity === "0")) finishGame();
           }, 1000)          
           newCards.forEach(card => {
             if(card.style.opacity !== "0") card.disabled = false
@@ -108,6 +132,10 @@ function check(code) {
       });
       selection = [];
     } else {
+      livesLost++
+      livesLost === 1 ? life1.style.opacity = 0 : livesLost === 2 ? life2.style.opacity = 0 : life3.style.opacity = 0;
+      livesArray.pop();
+      if(!livesArray.length) finishGame();
       setTimeout(() => {                
         newCards.forEach(card => {
           if(card.style.opacity !== "0") card.disabled = false
@@ -156,10 +184,15 @@ function hideCards(arr){
   })
 }
 
-function checkWin() {
+function finishGame() {
+  clearInterval(gameCounter);
+  restartScreenEl.style.display = 'flex';
+
   if(newCards.every(card => card.style.opacity === "0")) {
-    restartScreenEl.style.display = 'flex';
-  } 
+    resultText.innerText = 'YOU WIN!'
+  } else {
+    resultText.innerText = 'YOU LOSE!'
+  }
 }
 
 startGameBtn.addEventListener('click', startGame)
